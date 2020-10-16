@@ -45,7 +45,7 @@ class YOD:
         for i in indices:
             i = i[0]
             obj = dict()
-            obj['box'] = boxes[i]
+            obj['box'] = [boxes[i][0], boxes[i][1], boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]]
             obj['classification'] = self.classifications[classIds[i]]
             obj['confidence'] = int(confidences[i] * 100)
             objs.append(obj)
@@ -55,7 +55,7 @@ class YOD:
     def process_image(self, image, objs):
         for obj in objs:
             x, y, w, h = obj['box'][0], obj['box'][1], obj['box'][2], obj['box'][3]
-            cv2.rectangle(image, (x, y), (x + w, y + h), (244, 244, 0), 2)
+            cv2.rectangle(image, (x, y), (w, h), (244, 244, 0), 2)
             cv2.putText(image, '{0} {1}%'.format(obj['classification'], obj['confidence']), (x, y - 10), cv2.FONT_HERSHEY_PLAIN, 2, (230, 100, 10), 2)
 
     def detect_video(self, window_name = 'Camera'):
